@@ -1,10 +1,12 @@
 <%- |  String $group_install = 'oinstall', 
        String $oraInventory, 
        String $oracle_home, 
-       String $oracle_base | -%>
+       String $oracle_base,
+       String $version | -%>
+
 
 ###############################################################################
-## Copyright(c) Oracle Corporation 1998,2013. All rights reserved.           ##
+## Copyright(c) Oracle Corporation 1998,2008. All rights reserved.           ##
 ##                                                                           ##
 ## Specify values for the variables listed below to customize                ##
 ## your installation.                                                        ##
@@ -33,7 +35,7 @@ UNIX_GROUP_NAME=<%= $group_install %>
 # Inventory location.
 INVENTORY_LOCATION=<%= $oraInventory %>
 #-------------------------------------------------------------------------------
-# Specify the languages in which the components will be installed.
+# Languages in which the components will be installed.
 #
 # en   : English                  ja   : Japanese
 # fr   : French                   ko   : Korean
@@ -59,18 +61,13 @@ INVENTORY_LOCATION=<%= $oraInventory %>
 # in   : Indonesian               vi   : Vietnamese
 # it   : Italian
 #
-# all_langs   : All languages
-#
-# Specify value as the following to select any of the languages.
 # Example : SELECTED_LANGUAGES=en,fr,ja
-#
-# Specify value as the following to select all the languages.
-# Example : SELECTED_LANGUAGES=all_langs
 #-------------------------------------------------------------------------------
 SELECTED_LANGUAGES=en
 #-------------------------------------------------------------------------------
 # Complete path of the Oracle Home
 ORACLE_HOME=<%= $oracle_home %>
+ORACLE_HOME_NAME="ClientHome<%= $version %>"
 #-------------------------------------------------------------------------------
 # Complete path of the Oracle Base.
 ORACLE_BASE=<%= $oracle_base %>
@@ -81,28 +78,15 @@ ORACLE_BASE=<%= $oracle_base %>
 #
 #             The following choices are available. The value should contain
 #             only one of these choices.
-#               - InstantClient
-#               - Administrator
-#               - Runtime
-#               - Custom
+#             InstantClient : InstantClient
+#             Administrator : Administrator
+#             Runtime       : Runtime
+#             Custom        : Custom
 #
 #Example    : INSTALL_TYPE = "Administrator"
 #------------------------------------------------------------------------------
 oracle.install.client.installType=Administrator
 #-------------------------------------------------------------------------------
-#Name       : oracle.install.client.upgrading
-#Datatype   : boolean
-#Description: whether or not this is an upgrade installation
-#
-#             The following choices are available. The value should contain
-#             only one of these choices.
-#               - true
-#               - false
-#
-#Example    : oracle.install.client.upgrading=true
-#------------------------------------------------------------------------------
-oracle.install.client.upgrading=
-#------------------------------------------------------------------------------
 # Name       : oracle.install.client.customComponents
 # Datatype   : StringList
 #
@@ -131,14 +115,27 @@ oracle.install.client.upgrading=
 # oracle.network.cman:11.2.0.3.0 -- "Oracle Connection Manager"
 # oracle.network.listener:11.2.0.3.0 -- "Oracle Net Listener"
 # oracle.ordim.client:11.2.0.3.0 -- "Oracle Multimedia Client Option"
+# oracle.ons:11.2.0.3.0 -- "Oracle Notification Service"
 # oracle.odbc:11.2.0.3.0 -- "Oracle ODBC Driver"
 # oracle.has.client:11.2.0.3.0 -- "Oracle Clusterware High Availability API"
 # oracle.dbdev:11.2.0.3.0 -- "Oracle SQL Developer"
 # oracle.rdbms.scheduler:11.2.0.3.0 -- "Oracle Scheduler Agent"
 #
 #-------------------------------------------------------------------------------
-oracle.install.client.customComponents="oracle.sqlj:11.2.0.3.0","oracle.rdbms.util:11.2.0.3.0","oracle.javavm.client:11.2.0.3.0","oracle.sqlplus:11.2.0.3.0","oracle.dbjava.jdbc:11.2.0..0","oracle.ldap.client:11.2.0.3.0","oracle.rdbms.oci:11.2.0.3.0","oracle.precomp:11.2.0.3.0","oracle.xdk:11.2.0.3.0","oracle.network.aso:11.2.0.3.0","oracle.assistants.oemlt:11.2.0.3.0","oracle.oraolap.mgmt:11.2.0.3.0","oracle.network.client:11.2.0.3.0","oracle.network.cman:11.2.0.3.0","oracle.network.listener:11.2.0.3.0","oracle.ordim.client:11.2.0.3.0","oracle.odbc:11.2.0.3.0","oracle.has.client:11.2.0.3.0","oracle.dbdev:11.2.0.3.0","oracle.rdbms.scheduler:11.2.0.3.0"
+oracle.install.client.customComponents="oracle.sqlj:11.2.0.3.0","oracle.rdbms.util:11.2.0.3.0","oracle.javavm.client:11.2.0.3.0","oracle.sqlplus:11.2.0.3.0","oracle.dbjava.jdbc:11.2.0.3.0","oracle.ldap.client:11.2.0.3.0","oracle.rdbms.oci:11.2.0.3.0","oracle.precomp:11.2.0.3.0","oracle.xdk:11.2.0.3.0","oracle.network.aso:11.2.0.3.0","oracle.assistants.oemlt:11.2.0.3.0","oracle.oraolap.mgmt:11.2.0.3.0","oracle.network.client:11.2.0.3.0","oracle.network.cman:11.2.0.3.0","oracle.network.listener:11.2.0.3.0","oracle.ordim.client:11.2.0.3.0","oracle.ons:11.2.0.0.0","oracle.odbc:11.2.0.3.0","oracle.has.client:11.2.0.3.0","oracle.dbdev:11.2.0.3.0","oracle.rdbms.scheduler:11.2.0.3.0"
 #-------------------------------------------------------------------------------
+#Name       : MTS_PORT
+#Datatype   : int
+#Description: Port number to be used for by the Oracle MTS Recovery Service to listen
+#	      for requests. This needs to be entered in case oracle.ntoramts is
+#	      selected in the list of custom components in custom install
+#
+#
+#Example    : MTS_PORT = 2030
+#------------------------------------------------------------------------------
+oracle.install.client.oramtsPortNumber=
+
+#------------------------------------------------------------------------------
 # Host name to be used for by the Oracle Scheduler Agent.
 # This needs to be entered in case oracle.rdbms.scheduler is selected in the
 # list of custom components during custom install
@@ -155,68 +152,3 @@ oracle.install.client.schedulerAgentHostName=
 # Example: oracle.install.client.schedulerAgentPortNumber = 1500
 #------------------------------------------------------------------------------
 oracle.install.client.schedulerAgentPortNumber=
-#------------------------------------------------------------------------------
-# Specify the auto-updates option. It can be one of the following:
-#   - MYORACLESUPPORT_DOWNLOAD
-#   - OFFLINE_UPDATES
-#   - SKIP_UPDATES
-#------------------------------------------------------------------------------
-oracle.installer.autoupdates.option=
-
-#------------------------------------------------------------------------------
-# In case MYORACLESUPPORT_DOWNLOAD option is chosen, specify the location where
-# the updates are to be downloaded.
-# In case OFFLINE_UPDATES option is chosen, specify the location where the updates
-# are present.
-#------------------------------------------------------------------------------
-oracle.installer.autoupdates.downloadUpdatesLoc=
-
-#------------------------------------------------------------------------------
-# Specify the My Oracle Support Account Username which has the patches download privileges
-# to be used for software updates.
-#
-#  Example   : AUTOUPDATES_MYORACLESUPPORT_USERNAME=abc@oracle.com
-#------------------------------------------------------------------------------
-AUTOUPDATES_MYORACLESUPPORT_USERNAME=
-#------------------------------------------------------------------------------
-# Specify the My Oracle Support Account Username password which has the patches download privileges
-# to be used for software updates.
-#
-# Example    : AUTOUPDATES_MYORACLESUPPORT_PASSWORD=password
-#------------------------------------------------------------------------------
-AUTOUPDATES_MYORACLESUPPORT_PASSWORD=
-
-#------------------------------------------------------------------------------
-# Specify the Proxy server name. Length should be greater than zero.
-#
-# Example    : PROXY_HOST=proxy.domain.com
-#------------------------------------------------------------------------------
-PROXY_HOST=
-
-#------------------------------------------------------------------------------
-# Specify the proxy port number. Should be Numeric and at least 2 chars.
-#
-# Example    : PROXY_PORT=25
-#------------------------------------------------------------------------------
-PROXY_PORT=
-#------------------------------------------------------------------------------
-# Specify the proxy user name. Leave PROXY_USER and PROXY_PWD
-# blank if your proxy server requires no authentication.
-#
-# Example    : PROXY_USER=username
-#------------------------------------------------------------------------------
-PROXY_USER=
-#------------------------------------------------------------------------------
-# Specify the proxy password. Leave PROXY_USER and PROXY_PWD
-# blank if your proxy server requires no authentication.
-#
-# Example    : PROXY_PWD=password
-#------------------------------------------------------------------------------
-PROXY_PWD=
-
-#------------------------------------------------------------------------------
-# Specify the proxy realm.
-#
-# Example    : PROXY_REALM=metalink
-#------------------------------------------------------------------------------
-PROXY_REALM=

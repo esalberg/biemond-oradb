@@ -1,32 +1,33 @@
 <%- |  Integer $db_port | -%>
-######################################################################
-## Copyright(c) 1998, 2011 Oracle Corporation. All rights reserved. ##
-##                                                                  ##
-## Specify values for the variables listed below to customize your  ##
-## installation.                                                    ##
-##                                                                  ##
-## Each variable is associated with a comment. The comment          ##
-## identifies the variable type.                                    ##
-##                                                                  ##
-## Please specify the values in the following format:               ##
-##                                                                  ##
-##         Type         Example                                     ##
-##         String       "Sample Value"                              ##
-##         Boolean      True or False                               ##
-##         Number       1000                                        ##
-##         StringList   {"String value 1","String Value 2"}         ##
-##                                                                  ##
-######################################################################
-##                                                                  ##
-## This sample response file causes the Oracle Net Configuration    ##
-## Assistant (NetCA) to complete an Oracle Net configuration during ##
-## a custom install of the Oracle11g server which is similar to     ##
-## what would be created by the NetCA during typical Oracle11g      ##
-## install. It also documents all of the NetCA response file        ##
-## variables so you can create your own response file to configure  ##
-## Oracle Net during an install the way you wish.                   ##
-##                                                                  ##
-######################################################################
+###############################################################
+## Copyright(c) Oracle Corporation 2002. All rights reserved.##
+##                                                           ##
+## Specify values for the variables listed below to customize##
+## your installation.                                        ##
+##                                                           ##
+## Each variable is associated with a comment. The comment   ##
+## identifies the variable type.                             ##
+##                                                           ##
+## Please specify the values in the following format:        ##
+##                                                           ##
+##         Type         Example                              ##
+##         String       "Sample Value"                       ##
+##         Boolean      True or False                        ##
+##         Number       1000                                 ##
+##         StringList   {"String value 1","String Value 2"}  ##
+##                                                           ##
+###############################################################
+##                                                           ##
+## This sample response file causes the Oracle Net           ##
+## Configuration Assistant (NetCA) to complete an Oracle Net ##
+## configuration during a custom install of the Oracle11g    ##
+## server which is similar to what would be created by the   ##
+## NetCA during typical Oracle11g install. It also documents ##
+## all of the NetCA response files variables so you can      ##
+## create your own response file to configure Oracle Net     ##
+## during an install the way you wish.                       ##
+##                                                           ##
+###############################################################
 
 [GENERAL]
 RESPONSEFILE_VERSION="11.2"
@@ -44,7 +45,7 @@ CREATE_TYPE="CUSTOM"
 # The command line flag has precedence over the one in this response file.
 # This feature is present since 10.1.0.3.
 #-------------------------------------------------------------------------------
-#SHOW_GUI=false
+SHOW_GUI=false
 
 #-------------------------------------------------------------------------------
 # Name       : LOG_FILE
@@ -73,7 +74,7 @@ INSTALL_TYPE=""typical""
 
 #LISTENER_NUMBER;Number;Number of Listeners
 # A typical install sets one listener
-LISTENER_NUMBER=1
+LISTENER_NUMBER=0
 
 #LISTENER_NAMES;StringList;list of listener names
 # The values for listener are:
